@@ -1,7 +1,17 @@
 {
   "name": "chakra",
   "version": "0.1.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qinshou/chakra.git"
+  },
+  "keywords": [
+    "Chrome",
+    "Charles",
+    "Debugging"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/qinshou/chakra",
   "dependencies": {
     "classnames": "^2.2.5",
     "material-ui": "^0.18.7",
