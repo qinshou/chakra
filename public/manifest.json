@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "Chakra - Web debugging proxy application",
+  "description": "Chakra is an HTTP proxy / HTTP monitor",
+  "version": "1.0.0",
+  "default_locale": "zh_CN",
+  "icons": {
+    "128": "icons/icon_128.png"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval' http://127.0.0.1:3000 https://ssl.google-analytics.com; object-src 'self';",
+  "devtools_page": "devtools.html",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "background": {
+    "page": "background.html",
+    "persistent": true
+  }
+}
