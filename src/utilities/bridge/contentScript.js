@@ -1,28 +1,29 @@
-class ContentScript {
-  constructor () {
-    this.disconnected = false
+import { EventEmitter } from 'events'
+import { getTabId } from './utils'
 
-    this.port = chrome.runtime.connect({
-      name: 'ChakraContentScript_' + (chrome.devtools ? chrome.devtools.inspectedWindow.tabId : '')
-    })
+class ContentScript extends EventEmitter {
+  static send (payload, cb) {
+    const message = Object.assign({}, payload, {tabId: getTabId()})
+    const responseCallback = response => cb && cb(response)
 
-    this.port.onDisconnect.addListener(() => {
-      this.disconnected = true
-    })
+    chrome.runtime.sendMessage(message, responseCallback)
   }
 
-  listen (cb) {
-    this.port.onMessage.addListener(payload => {
-      cb(payload)
-    })
-  }
-
-  send (payload) {
-    if (this.disconnected) {
-      return
+  listen () {
+    const connectInfo = {
+      name: 'ChakraContentScript_' + getTabId()
     }
 
-    this.port.postMessage(payload)
+    const port = chrome.runtime.connect(connectInfo)
+    this.emit('connect', port)
+
+    port.onMessage.addListener(payload => {
+      this.emit('message', payload)
+    })
+
+    port.onDisconnect.addListener(() => {
+      this.emit('disconnect')
+    })
   }
 }
 

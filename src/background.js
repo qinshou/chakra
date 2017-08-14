@@ -1,72 +1,74 @@
 import {
-  updateConnectionState,
   requestAppend,
   TOOLBAR_RECORDING
 } from './actions'
 
-import bridge from './utilities/bridge/pipe'
+import Background from './utilities/bridge/background'
 import Request from './utilities/bridge/request'
 
 const ports = {}
+const background = new Background()
 
-bridge.connectContentScript((tabId, port) => {
-  // I don't know why should ignore this
+background.on('connect', (tabId, port) => {
   if (ports[tabId]) {
     return
   }
-  // Send login action
-  port.postMessage(updateConnectionState({ connection: true }))
 
-  const request = new Request(tabId)
-  const listener = sendingRequestDetails(port)
+  ports[tabId] = {
+    request: new Request(tabId),
+    listener: requestListener(port)
+  }
+})
 
-  ports[tabId] = { request, listener }
-  request.addRequestCompletedListener(listener)
-}, (tabId) => {
+background.on('disconnect', tabId => {
   if (!ports[tabId]) {
     return
   }
 
-  ports[tabId].request.removeEventListener(ports[tabId].listener)
+  ports[tabId].request.removeRequestListener(ports[tabId].listener)
   delete ports[tabId]
 })
 
-// Listening action message
-bridge.addMessageListener(messageReducer)
-
-function messageReducer (action, reply) {
+background.on('message', (action, tabId, reply) => {
   switch (action.type) {
     case TOOLBAR_RECORDING: {
-      const { recording } = action.payload
-      const port = ports[action.tabId]
+      const {recording} = action.payload
+      const port = ports[tabId]
 
       if (!port) {
         return
       }
 
-      if (recording) {
-        port.request.addRequestCompletedListener(port.listener)
-      } else {
-        port.request.removeEventListener(port.listener)
-      }
-
-      reply(responseHandler({ response: 'ok' }))
+      handleRecording({recording, port, reply})
       break
     }
 
     default:
       break
   }
+})
+
+background.listen()
+
+function handleRecording ({recording, port, reply}) {
+  const {request, listener} = port
+  if (recording) {
+    request.addRequestListener(listener)
+  } else {
+    request.removeRequestListener(listener)
+  }
+
+  reply(replyHandler({response: 'ok'}))
 }
 
-function sendingRequestDetails (port) {
+function requestListener (port) {
   return function (details) {
     port.postMessage(requestAppend(details))
   }
 }
 
-function responseHandler ({ hasError = false, response }) {
-  const ret = { hasError }
+function replyHandler ({hasError = false, response}) {
+  const ret = {hasError}
   if (!hasError) {
     ret.content = response
   } else {

@@ -1,5 +1,5 @@
 ;(function () {
-  var isDebug = chrome.runtime.id === 'jjlamdmpjannhabnljlbanhafpkgfoko' || location.search.indexOf('debug') >= 0
+  var isDebug = chrome.runtime.id === 'jjlamdmpjannhabnljlbanhafpkgfoko' || window.location.search.indexOf('debug') >= 0
   var rootPath = isDebug ? 'http://127.0.0.1:3000' : ''
 
   addJS(rootPath + '/dist/js/app.js')

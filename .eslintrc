@@ -1,0 +1,16 @@
+parser: babel-eslint
+
+extends: standard
+
+globals:
+  chrome: true
+  React: true
+
+plugins:
+  - standard
+  - promise
+  - react
+
+rules:
+  react/jsx-uses-react: error
+  react/jsx-uses-vars: error

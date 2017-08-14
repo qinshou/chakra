@@ -6,11 +6,11 @@ class Request {
     }
   }
 
-  addRequestCompletedListener (cb) {
-    chrome.webRequest.onCompleted.addListener(details => cb(details), this.filter)
+  addRequestListener (fnRef) {
+    chrome.webRequest.onCompleted.addListener(fnRef, this.filter)
   }
 
-  removeEventListener (fnRef) {
+  removeRequestListener (fnRef) {
     chrome.webRequest.onCompleted.removeListener(fnRef)
   }
 }

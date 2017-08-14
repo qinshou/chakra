@@ -1,30 +1,33 @@
-class Background {
-  constructor () {
-    this.tabId = null
-    this.port = null
-    this.disconnected = false
-  }
+import { EventEmitter } from 'events'
 
-  onConnect (cb) {
-    cb = cb || function () { }
-    chrome.runtime.onConnect.addListener(port => {
-      this.port = port
-      this.tabId = +port.name.split('_')[1]
-
-      this.port.onDisconnect.addListener(port => {
-        this.disconnected = true
-        this.port.onMessage.removeListener(cb)
-      })
-      cb(this)
-    })
-  }
-
-  send (payload) {
-    if (this.disconnected) {
+export default class Background extends EventEmitter {
+  handleConnect (port) {
+    if (port.name.indexOf('ChakraContentScript') < 0) {
       return
     }
-    this.port.postMessage(payload)
+
+    const tabId = +port.name.split('_')[1]
+
+    port.onDisconnect.addListener(port => {
+      this.emit('disconnect', tabId, port)
+    })
+
+    this.emit('connect', tabId, port)
+  }
+
+  handleMessage (message, sender, sendResponse) {
+    if (sender.id !== chrome.runtime.id) {
+      return
+    }
+
+    const tabId = message.tabId || null
+    delete message.tabId
+
+    this.emit('message', message, tabId, sendResponse)
+  }
+
+  listen () {
+    chrome.runtime.onConnect.addListener(this.handleConnect.bind(this))
+    chrome.runtime.onMessage.addListener(this.handleMessage.bind(this))
   }
 }
-
-export default Background

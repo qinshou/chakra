@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Toolbar from '../toolbar'
 import Request from '../request'
 
-const App = ({ request }) => {
+const App = ({request}) => {
   return (
     <div>
       <Toolbar />

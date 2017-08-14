@@ -95,6 +95,17 @@ const devConfig = {
       },
       {
         test: /\.css$/,
+        include: [path.resolve(__dirname, 'src', 'utilities', 'vendor')],
+        use: [
+          require.resolve('style-loader'),
+          {
+            loader: require.resolve('css-loader')
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        include: [path.resolve(__dirname, 'src', 'components')],
         use: [
           require.resolve('style-loader'),
           {
