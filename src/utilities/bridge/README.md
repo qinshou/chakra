@@ -1,6 +1,6 @@
 # Bridge
 
-<img width="200" height="200" alt="bridge" src="http://storage.slide.news.sina.com.cn/slidenews/77_ori/2016_12/74766_636997_502573.gif"/>
+![dog](https://user-images.githubusercontent.com/1736244/29264052-195cc95c-810e-11e7-8fab-0976653965cc.gif)
 
 解决 ContentScript 与 Background 通信
 
