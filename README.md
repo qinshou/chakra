@@ -10,3 +10,13 @@
 
 # Chakra
 Web debugging proxy application for Chrome
+
+![ui.png](./ui.png)
+
+
+
+# TODO
+- [X] Built in Chrome
+- [X] Request recording
+- [ ] Request breakpoint
+- [ ] Request Map
