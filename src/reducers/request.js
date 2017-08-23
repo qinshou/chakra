@@ -1,11 +1,9 @@
-import {
-  REQUEST_APPEND,
-  REQUEST_CLEAR
-} from '../actions'
+import { REQUEST_CLEAR } from '../actions'
+import { APPEND_REQUEST } from '../actions/bridge'
 
 function requestReducer (state = [], action) {
   switch (action.type) {
-    case REQUEST_APPEND:
+    case APPEND_REQUEST:
       return [...state, action.payload]
 
     case REQUEST_CLEAR:

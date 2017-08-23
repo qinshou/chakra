@@ -16,12 +16,16 @@
     "classnames": "^2.2.5",
     "events": "^1.1.1",
     "prop-types": "^15.5.10",
+    "qs": "^6.5.0",
+    "rc-dialog": "^6.5.11",
+    "rc-form": "^1.4.6",
     "rc-table": "^5.4.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

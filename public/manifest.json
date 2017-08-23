@@ -17,5 +17,6 @@
   "background": {
     "page": "background.html",
     "persistent": true
-  }
+  },
+  "minimum_chrome_version": "23"
 }

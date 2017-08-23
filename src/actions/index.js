@@ -1,38 +1,40 @@
-import contentScript from '../utilities/bridge/contentScript'
-
-export const REQUEST_APPEND = 'REQUEST_APPEND'
+import api from '../utilities/api'
 export const REQUEST_CLEAR = 'REQUEST_CLEAR'
 
-export const TOOLBAR_CONNECTION = 'TOOLBAR_CONNECTION'
-export const TOOLBAR_RECORDING = 'TOOLBAR_RECORDING'
+export const DETAIL_DATA = 'DETAIL_DATA'
+export const BREAKPOINT_DIALOG_TOGGLE = 'BREAKPOINT_DIALOG_TOGGLE'
 
-export function updateConnectionState ({connection}) {
+export const UI_TOOLBAR_STATUS_UPDATE = 'UI_TOOLBAR_STATUS_UPDATE'
+export const UI_TOOLBAR_CONNECTION = 'UI_TOOLBAR_CONNECTION'
+export const UI_TOOLBAR_RECORDING = 'UI_TOOLBAR_RECORDING'
+export const UI_DETAIL_VISIBLE = 'UI_DETAIL_VISIBLE'
+export const UI_BREAKPOINT_EDIT_VISIBLE = 'UI_BREAKPOINT_EDIT_VISIBLE'
+
+export function updateToolbarStatus (status) {
   return {
-    type: TOOLBAR_CONNECTION,
-    payload: {connection}
+    type: UI_TOOLBAR_STATUS_UPDATE,
+    payload: status
   }
 }
 
-export function updateRecordingState ({recording}) {
+export function updateDetailVisible (isVisible) {
   return {
-    type: TOOLBAR_RECORDING,
-    payload: {recording}
+    type: UI_DETAIL_VISIBLE,
+    payload: isVisible
   }
 }
 
-export function toggleRecording () {
-  return (dispatch, getState) => {
-    const {toolbar} = getState()
-    const payload = {recording: !toolbar.recording}
-    dispatchToBridge(updateRecordingState(payload))
-    dispatch(updateRecordingState(payload))
+export function updateDetailData (data) {
+  return {
+    type: DETAIL_DATA,
+    payload: data
   }
 }
 
-export function requestAppend (details) {
+export function updateBreakpointEditVisible (isVisible) {
   return {
-    type: REQUEST_APPEND,
-    payload: details
+    type: UI_BREAKPOINT_EDIT_VISIBLE,
+    payload: isVisible
   }
 }
 
@@ -42,8 +44,26 @@ export function requestClear () {
   }
 }
 
-export function dispatchToBridge (action) {
-  contentScript.send(action, res => {
-    //
-  })
+export function toggleRecording () {
+  return (dispatch, getState) => {
+    api.updateRecording({
+      recording: !getState().ui.toolbarStatus.recording
+    }).then(res => {
+      dispatch(updateToolbarStatus({
+        recording: res.recording
+      }))
+    })
+  }
+}
+
+export function toggleBreakpoint () {
+  return (dispatch, getState) => {
+    api.updateBreakpoint({
+      breakpoint: !getState().ui.toolbarStatus.breakpoint
+    }).then(res => {
+      dispatch(updateToolbarStatus({
+        breakpoint: res.breakpoint
+      }))
+    })
+  }
 }

@@ -1,11 +1,6 @@
-import {
-  requestAppend,
-  TOOLBAR_RECORDING
-} from './actions'
-
 import Background from './utilities/bridge/background'
 import Request from './utilities/bridge/request'
-
+import Reducer, { requestListener } from './utilities/background'
 const ports = {}
 const background = new Background()
 
@@ -30,50 +25,13 @@ background.on('disconnect', tabId => {
 })
 
 background.on('message', (action, tabId, reply) => {
-  switch (action.type) {
-    case TOOLBAR_RECORDING: {
-      const {recording} = action.payload
-      const port = ports[tabId]
+  const port = ports[tabId]
 
-      if (!port) {
-        return
-      }
-
-      handleRecording({recording, port, reply})
-      break
-    }
-
-    default:
-      break
+  if (!port) {
+    return
   }
+  const reducer = new Reducer({ action, reply, port })
+  reducer.reducer()
 })
 
 background.listen()
-
-function handleRecording ({recording, port, reply}) {
-  const {request, listener} = port
-  if (recording) {
-    request.addRequestListener(listener)
-  } else {
-    request.removeRequestListener(listener)
-  }
-
-  reply(replyHandler({response: 'ok'}))
-}
-
-function requestListener (port) {
-  return function (details) {
-    port.postMessage(requestAppend(details))
-  }
-}
-
-function replyHandler ({hasError = false, response}) {
-  const ret = {hasError}
-  if (!hasError) {
-    ret.content = response
-  } else {
-    ret.error = response
-  }
-
-  return ret
-}

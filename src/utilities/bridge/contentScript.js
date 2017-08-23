@@ -3,7 +3,7 @@ import { getTabId } from './utils'
 
 class ContentScript extends EventEmitter {
   static send (payload, cb) {
-    const message = Object.assign({}, payload, {tabId: getTabId()})
+    const message = Object.assign({}, payload, { tabId: getTabId() })
     const responseCallback = response => cb && cb(response)
 
     chrome.runtime.sendMessage(message, responseCallback)

@@ -7,16 +7,25 @@
 <a href="https://travis-ci.org/qinshou/chakra"><img src="https://travis-ci.org/qinshou/chakra.svg?branch=master"/></a>
 <a href="https://github.com/qinshou/chakra"><img src="https://img.shields.io/github/license/qinshou/chakra.svg"/></a>
 </p>
+<p align="center">
+<i><b> This app is still in development stage </b></i>
+</p>
 
 # Chakra
-Web debugging proxy application for Chrome
 
 ![ui.png](./ui.png)
+
+Web debugging proxy application for Chrome
+
 
 
 
 # TODO
-- [X] Built in Chrome
+- [X] Built for Chrome
 - [X] Request recording
-- [ ] Request breakpoint
+- [ ] Request breakpoint ( Haven't found available API :(
 - [ ] Request Map
+
+# License
+
+MIT

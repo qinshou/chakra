@@ -6,12 +6,25 @@ class Request {
     }
   }
 
-  addRequestListener (fnRef) {
+  addResponseListener (fnRef) {
     chrome.webRequest.onCompleted.addListener(fnRef, this.filter)
   }
 
-  removeRequestListener (fnRef) {
+  removeResponseListener (fnRef) {
     chrome.webRequest.onCompleted.removeListener(fnRef)
+  }
+
+  addBreakpointListener (fnRef) {
+    // chrome.webRequest.onBeforeRequest.addListener(function (details) {
+    //   debugger
+    //   return { cancel: true }
+    // }, { urls: ['*://www.evil.com/*'] }, ['blocking', 'requestBody'])
+
+    chrome.webRequest.onBeforeRequest.addListener(fnRef, this.filter)
+  }
+
+  removeBreakpointListener () {
+
   }
 }
 
