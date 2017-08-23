@@ -38,7 +38,7 @@ export default class BackgroundReducer {
   }
 
   handleBreakpoint () {
-    const { request, listener } = this.port
+    // const { request, listener } = this.port
     const breakpoint = this.action.payload
 
     // if (breakpoint) {

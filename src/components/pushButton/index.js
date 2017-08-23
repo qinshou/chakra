@@ -24,7 +24,7 @@ export default class Button extends Component {
     }
   }
 
-  render() {
+  render () {
     const { children, type, className } = this.props
     const classes = cx(styles.pushButton, className, {
       ['type-' + type]: type

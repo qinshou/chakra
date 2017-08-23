@@ -7,11 +7,10 @@ import { FormItem } from '../../components/form'
 import { updateBreakpointEditVisible } from '../../actions'
 
 const BreakpointDialog = ({ form, visible, data, updateBreakpointEditVisible }) => {
-  const { getFieldProps, validateFields, getFieldDecorator } = form
+  const { getFieldProps, validateFields } = form
 
   function submit () {
     validateFields((error, value) => {
-      debugger
       console.log(error, value)
     })
   }
